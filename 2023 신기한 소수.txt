@@ -1,0 +1,43 @@
+/*
+문제
+수빈이가 세상에서 가장 좋아하는 것은 소수이고, 취미는 소수를 가지고 노는 것이다. 요즘 수빈이가 가장 관심있어 하는 소수는 7331이다.
+
+7331은 소수인데, 신기하게도 733도 소수이고, 73도 소수이고, 7도 소수이다. 즉, 왼쪽부터 1자리, 2자리, 3자리, 4자리 수 모두 소수이다! 수빈이는 이런 숫자를 신기한 소수라고 이름 붙였다.
+
+수빈이는 N자리의 숫자 중에서 어떤 수들이 신기한 소수인지 궁금해졌다. N이 주어졌을 때, 수빈이를 위해 N자리 신기한 소수를 모두 찾아보자.
+
+입력
+첫째 줄에 N(1 ≤ N ≤ 8)이 주어진다.
+
+출력
+N자리 수 중에서 신기한 소수를 오름차순으로 정렬해서 한 줄에 하나씩 출력한다.
+*/
+
+import math
+
+# 소수 판별 함수
+def is_prime(num):
+    if num < 2:
+        return False
+    for i in range(2, int(math.sqrt(num)) + 1):
+        if num % i == 0:
+            return False
+    return True
+
+# 신기한 소수 찾기 함수
+def find_interesting_primes(number, length, N):
+    if length == N:  # N자리 숫자가 완성되면 출력
+        print(number)
+        return
+    
+    for digit in range(1, 10, 2):  # 다음 자릿수에 홀수만 추가 (짝수는 소수가 될 수 없음)
+        next_number = number * 10 + digit
+        if is_prime(next_number):  # 중간 숫자가 소수일 때만 계속 탐색
+            find_interesting_primes(next_number, length + 1, N)
+
+# 입력 받기
+N = int(input())
+
+# 초기 시작 숫자로 신기한 소수를 찾기 시작
+for start in [2, 3, 5, 7]:  # 한 자리 소수만 시작 가능
+    find_interesting_primes(start, 1, N)
